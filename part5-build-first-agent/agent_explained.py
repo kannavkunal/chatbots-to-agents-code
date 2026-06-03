@@ -1,5 +1,5 @@
 """
-50-Line Agent — Explained Version
+90-Line Agent — Explained Version (Gemini)
 
 This is the same agent from agent.py but with detailed comments explaining
 every piece. If you're learning, start here. If you just want to run it,
@@ -11,42 +11,49 @@ What this does:
 - Maintains short-term memory via the messages list (Part 4: memory)
 - Stops after 10 steps to prevent infinite loops
 
+Uses Google's Gemini API (free tier available!)
 Read the full article: Part 5 of From Chatbots to Agents
 """
 
-import anthropic
+import os
+from google import genai
+from google.genai import types
 
-# Initialize the Anthropic client (reads ANTHROPIC_API_KEY from environment)
-client = anthropic.Anthropic()
+# Initialize the Gemini client (reads GEMINI_API_KEY from environment)
+client = genai.Client(api_key=os.environ.get('GEMINI_API_KEY'))
 
 # Configuration
-MODEL = "claude-sonnet-4-6"  # The model we're using
-MAX_STEPS = 10               # Safety limit: stop after 10 reasoning steps
+MODEL = "gemini-3.1-flash-lite"  # Free tier model with good performance
+MAX_STEPS = 10                    # Safety limit: stop after 10 reasoning steps
 
 
 # ========== PART 1: THE TOOL (Part 3 of the series) ==========
 # Tools are how agents DO things instead of just talking about them.
-# This is a tool schema following the Claude API format.
+# This is a tool schema following the Gemini function calling format.
 
-tools = [{
-    "name": "calculator",
-    "description": (
-        "Evaluate a math expression and return the numeric result. "
-        "ALWAYS use this for any arithmetic — do not do math in your head."
-        # ↑ This instruction is critical. Without "ALWAYS", the model
-        # will sometimes just guess at math instead of using the tool.
-    ),
-    "input_schema": {
-        "type": "object",
-        "properties": {
-            "expression": {
-                "type": "string",
-                "description": "A valid Python arithmetic expression, e.g. '2345 * 678'"
-            }
-        },
-        "required": ["expression"]
-    }
-}]
+calculator_tool = types.Tool(
+    function_declarations=[
+        types.FunctionDeclaration(
+            name='calculator',
+            description=(
+                'Evaluate a math expression and return the numeric result. '
+                'ALWAYS use this for any arithmetic — do not do math in your head.'
+                # ↑ This instruction is critical. Without "ALWAYS", the model
+                # will sometimes just guess at math instead of using the tool.
+            ),
+            parameters=types.Schema(
+                type=types.Type.OBJECT,
+                properties={
+                    'expression': types.Schema(
+                        type=types.Type.STRING,
+                        description='A valid Python arithmetic expression, e.g. "2345 * 678"'
+                    )
+                },
+                required=['expression']
+            )
+        )
+    ]
+)
 
 
 def run_tool(name, args):
@@ -57,19 +64,19 @@ def run_tool(name, args):
     we actually execute it here and return what happened.
 
     Args:
-        name: The tool name (e.g. "calculator")
-        args: A dict of arguments (e.g. {"expression": "2 + 2"})
+        name: The tool name (e.g. 'calculator')
+        args: A dict of arguments (e.g. {'expression': '2 + 2'})
 
     Returns:
         String result to send back to the model
     """
-    if name == "calculator":
+    if name == 'calculator':
         try:
             # Evaluate the math expression
             # NOTE: eval() is UNSAFE for untrusted input. This is fine for
             # a local demo where you control the input, but in production
             # you'd use a proper math parser. We cover this in Part 7.
-            result = eval(args["expression"], {"__builtins__": {}})
+            result = eval(args['expression'], {"__builtins__": {}})
             return str(result)
         except Exception as e:
             # If the expression is invalid, return the error
@@ -80,85 +87,118 @@ def run_tool(name, args):
 
 
 # ========== PART 2: THE REASONING LOOP (Part 2 of the series) ==========
-# This is the agent's "brain": think → act → observe, repeated until done.
+# This is the agent's "brain" — the loop that makes it an agent instead
+# of just a chatbot.
 
 def agent(task: str):
     """
-    Run an agentic task using a reasoning loop.
+    Run the agent on a task.
 
-    The loop:
-    1. Send messages to the model (THINK)
-    2. Model returns either an answer or a tool call (ACT)
-    3. If tool call: execute it and add result to messages (OBSERVE)
-    4. Repeat until model says it's done or we hit MAX_STEPS
+    This implements the core reasoning loop: THINK → ACT → OBSERVE → repeat
 
     Args:
-        task: The user's question/task as a string
+        task: The user's question or instruction
 
     Returns:
-        The agent's final answer as a string
+        The agent's final answer (or an error if it hits MAX_STEPS)
     """
 
-    # ===== PART 4: SHORT-TERM MEMORY =====
-    # The messages list is the agent's "working memory" — everything it
-    # remembers about this task. Starts with just the user's question.
-    messages = [{"role": "user", "content": task}]
+    # ---- PART 4: SHORT-TERM MEMORY ----
+    # The messages list is the agent's working memory. It remembers:
+    # - What the user asked
+    # - What tools it called
+    # - What the tools returned
+    # This lets it build on previous steps instead of starting fresh each time.
 
-    # ===== THE REASONING LOOP =====
+    messages = [types.Content(role='user', parts=[types.Part(text=task)])]
+    #           ↑ Start with the user's task as the first message
+
+
+    # ---- THE LOOP ----
+    # Each iteration is one "step" of reasoning. The model will:
+    # 1. THINK about what to do next (based on all messages so far)
+    # 2. Either answer OR call a tool
+    # 3. If it called a tool, we ACT (run it), then OBSERVE (add result to memory)
+    # 4. Loop back to THINK again with the new information
+
     for step in range(MAX_STEPS):
-        # THINK: Send current state to the model
-        resp = client.messages.create(
+
+        # ---- THINK ----
+        # Ask the model what to do next, given:
+        # - The full conversation history (messages)
+        # - The tools it can use (calculator_tool)
+        resp = client.models.generate_content(
             model=MODEL,
-            max_tokens=1024,          # How much the model can say
-            tools=tools,              # The tools it can use
-            messages=messages         # The conversation so far
+            contents=messages,  # Everything that's happened so far
+            config=types.GenerateContentConfig(tools=[calculator_tool])
         )
 
-        # Check if the agent is DONE
-        # stop_reason == "end_turn" means the model has nothing more to do
-        if resp.stop_reason == "end_turn":
-            # Find the text response (not a tool call) and return it
-            return next(b.text for b in resp.content if hasattr(b, "text"))
+        # Extract the response content
+        response_content = resp.candidates[0].content
 
-        # If we get here, the model wants to ACT (use a tool)
+        # ---- CHECK: Is the agent done? ----
+        # If the response has NO function calls, the agent is finished.
+        # It's ready to give its final answer.
+        has_tool_call = any(
+            hasattr(part, 'function_call') and part.function_call
+            for part in response_content.parts
+        )
 
-        # Add the assistant's response to memory (includes tool calls)
-        messages.append({"role": "assistant", "content": resp.content})
+        if not has_tool_call:
+            # Agent is done — extract and return the text response
+            for part in response_content.parts:
+                if hasattr(part, 'text') and part.text:
+                    return part.text
+            return "No response text"  # Shouldn't happen, but just in case
 
-        # ACT + OBSERVE: Execute each tool the model called
-        results = []
-        for block in resp.content:
-            if block.type == "tool_use":
-                # Execute the tool
-                out = run_tool(block.name, block.input)
+        # ---- ACT + OBSERVE ----
+        # The agent wants to use tool(s). We:
+        # 1. Add the agent's response (with function calls) to memory
+        # 2. Run each tool it requested
+        # 3. Add the tool results back to memory
+        # Then loop back to THINK with the new information.
 
-                # Print what happened (so we can watch the agent think)
-                print(f"  [step {step}] {block.name}({block.input}) -> {out}")
+        messages.append(response_content)  # Remember what the agent said
+        tool_results = []
 
-                # Package the result in the format Claude expects
-                results.append({
-                    "type": "tool_result",
-                    "tool_use_id": block.id,  # Link back to the tool call
-                    "content": out             # The actual result
-                })
+        # Run each tool the agent requested
+        for part in response_content.parts:
+            if hasattr(part, 'function_call') and part.function_call:
+                func_call = part.function_call
+                args = dict(func_call.args) if func_call.args else {}
 
-        # Add tool results to memory (this is the OBSERVE step)
-        messages.append({"role": "user", "content": results})
+                # ACT: Run the tool
+                result = run_tool(func_call.name, args)
+                print(f"  [step {step}] {func_call.name}({args}) -> {result}")
 
-        # Loop back to THINK (the model will see these results and decide what's next)
+                # Package the result to send back to the model
+                tool_results.append(
+                    types.Part(
+                        function_response=types.FunctionResponse(
+                            name=func_call.name,
+                            response={'result': result}
+                        )
+                    )
+                )
 
-    # If we hit MAX_STEPS, stop (safety limit)
+        # OBSERVE: Add tool results to memory so the model can see what happened
+        messages.append(types.Content(role='user', parts=tool_results))
+
+        # Now loop back to THINK with this new information...
+
+    # If we get here, we hit MAX_STEPS without finishing
+    # This usually means the agent is stuck in a loop or the task is too complex
     return "Stopped: hit max steps."
 
 
 # ========== PART 3: RUN IT ==========
-if __name__ == "__main__":
-    # Ask the agent something that requires calculation
+# Try it with a question that requires multiple calculations
+
+if __name__ == '__main__':
     result = agent("What's 2,345 × 678, minus the number of seconds in a day?")
     print(result)
 
-    # You should see output like:
-    #   [step 0] calculator({'expression': '2345 * 678'}) -> 1589910
-    #   [step 1] calculator({'expression': '24 * 60 * 60'}) -> 86400
-    #   [step 2] calculator({'expression': '1589910 - 86400'}) -> 1503510
-    #   The answer is 1,503,510.
+    # Try changing the question to see how the agent adapts:
+    # - "What's 15% of 2,400?"
+    # - "How many hours are in a week?"
+    # - "Calculate 999 * 888, then subtract 100,000"

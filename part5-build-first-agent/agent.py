@@ -1,65 +1,92 @@
-import anthropic
+import os
+from google import genai
+from google.genai import types
 
-client = anthropic.Anthropic()
-MODEL = "claude-sonnet-4-6"
+client = genai.Client(api_key=os.environ.get('GEMINI_API_KEY'))
+MODEL = "gemini-3.1-flash-lite"
 MAX_STEPS = 10
 
 # ---- 1. THE TOOL (Part 3: Hands) ----
-tools = [{
-    "name": "calculator",
-    "description": (
-        "Evaluate a math expression and return the numeric result. "
-        "ALWAYS use this for any arithmetic — do not do math in your head."
-    ),
-    "input_schema": {
-        "type": "object",
-        "properties": {
-            "expression": {
-                "type": "string",
-                "description": "A valid Python arithmetic expression, e.g. '2345 * 678'"
-            }
-        },
-        "required": ["expression"]
-    }
-}]
+calculator_tool = types.Tool(
+    function_declarations=[
+        types.FunctionDeclaration(
+            name='calculator',
+            description=(
+                'Evaluate a math expression and return the numeric result. '
+                'ALWAYS use this for any arithmetic — do not do math in your head.'
+            ),
+            parameters=types.Schema(
+                type=types.Type.OBJECT,
+                properties={
+                    'expression': types.Schema(
+                        type=types.Type.STRING,
+                        description='A valid Python arithmetic expression, e.g. "2345 * 678"'
+                    )
+                },
+                required=['expression']
+            )
+        )
+    ]
+)
 
 def run_tool(name, args):
-    if name == "calculator":
+    if name == 'calculator':
         try:
             # NOTE: eval() is unsafe for untrusted input — fine for a local
             # demo, NOT for production. We fix this properly in Part 7.
-            return str(eval(args["expression"], {"__builtins__": {}}))
+            return str(eval(args['expression'], {"__builtins__": {}}))
         except Exception as e:
             return f"Error: {e}"
     return f"Unknown tool: {name}"
 
 # ---- 2. THE LOOP (Part 2: Brain) ----
 def agent(task: str):
-    messages = [{"role": "user", "content": task}]   # Part 4: short-term memory
+    messages = [types.Content(role='user', parts=[types.Part(text=task)])]
 
     for step in range(MAX_STEPS):
-        resp = client.messages.create(
-            model=MODEL, max_tokens=1024,
-            tools=tools, messages=messages
+        resp = client.models.generate_content(
+            model=MODEL,
+            contents=messages,
+            config=types.GenerateContentConfig(tools=[calculator_tool])
         )
 
-        # Agent is done — no more tool calls
-        if resp.stop_reason == "end_turn":
-            return next(b.text for b in resp.content if hasattr(b, "text"))
+        # Extract response content
+        response_content = resp.candidates[0].content
 
-        # Agent wants to use a tool
-        messages.append({"role": "assistant", "content": resp.content})
-        results = []
-        for block in resp.content:
-            if block.type == "tool_use":
-                out = run_tool(block.name, block.input)
-                print(f"  [step {step}] {block.name}({block.input}) -> {out}")
-                results.append({
-                    "type": "tool_result",
-                    "tool_use_id": block.id,
-                    "content": out
-                })
-        messages.append({"role": "user", "content": results})
+        # Check if agent wants to use a tool
+        has_tool_call = any(
+            hasattr(part, 'function_call') and part.function_call
+            for part in response_content.parts
+        )
+
+        if not has_tool_call:
+            # Agent is done — extract text response
+            for part in response_content.parts:
+                if hasattr(part, 'text') and part.text:
+                    return part.text
+            return "No response text"
+
+        # Agent wants to use tool(s)
+        messages.append(response_content)
+        tool_results = []
+
+        for part in response_content.parts:
+            if hasattr(part, 'function_call') and part.function_call:
+                func_call = part.function_call
+                args = dict(func_call.args) if func_call.args else {}
+                result = run_tool(func_call.name, args)
+                print(f"  [step {step}] {func_call.name}({args}) -> {result}")
+
+                tool_results.append(
+                    types.Part(
+                        function_response=types.FunctionResponse(
+                            name=func_call.name,
+                            response={'result': result}
+                        )
+                    )
+                )
+
+        messages.append(types.Content(role='user', parts=tool_results))
 
     return "Stopped: hit max steps."
 

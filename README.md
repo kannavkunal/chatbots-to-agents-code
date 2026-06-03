@@ -16,10 +16,10 @@ This repo contains runnable code from the series. Each part has its own folder w
 ### Prerequisites
 
 - **Python 3.8+**
-- **Anthropic API key** — Sign up at [console.anthropic.com](https://console.anthropic.com/)
-  - New accounts get **$5 in free credits** (enough to run all these examples many times)
-  - No credit card required for the free tier
-  - After signup, get your key from Settings → API Keys
+- **Google Gemini API key** — Get one FREE at [ai.google.dev](https://aistudio.google.com/app/apikey)
+  - **100% FREE tier** - no credit card required!
+  - 15 requests/minute, 1,500 requests/day
+  - More than enough to run these examples hundreds of times
 
 ### Setup
 
@@ -32,7 +32,7 @@ cd chatbots-to-agents-code
 pip install -r requirements.txt
 
 # Set your API key
-export ANTHROPIC_API_KEY='your-key-here'
+export GEMINI_API_KEY='your-api-key-here'
 ```
 
 ### Run Your First Agent (Part 5)
@@ -46,9 +46,9 @@ You should see the agent solve a math problem using its calculator tool:
 
 ```
 [step 0] calculator({'expression': '2345 * 678'}) -> 1589910
-[step 1] calculator({'expression': '24 * 60 * 60'}) -> 86400
-[step 2] calculator({'expression': '1589910 - 86400'}) -> 1503510
-The answer is 1,503,510.
+[step 0] calculator({'expression': '24 * 60 * 60'}) -> 86400
+[step 1] calculator({'expression': '1589910 - 86400'}) -> 1503510
+The result is **1,503,510**.
 ```
 
 ## Series Overview
@@ -79,17 +79,22 @@ part7-guardrails/           # Coming soon
 
 ## Common Issues
 
-**"No module named 'anthropic'"**
+**"ModuleNotFoundError: No module named 'google.genai'"**
 ```bash
-pip install anthropic
+pip install google-genai
 ```
 
 **"API key not set"**
 ```bash
-export ANTHROPIC_API_KEY='your-key-here'
+export GEMINI_API_KEY='your-key-here'
 # Or on Windows:
-set ANTHROPIC_API_KEY=your-key-here
+set GEMINI_API_KEY=your-key-here
 ```
+
+**"429 RESOURCE_EXHAUSTED" or quota errors**
+- You've hit your free tier limit (15 requests/min or 1,500/day)
+- Wait a minute and try again
+- Check your usage at [https://ai.google.dev/gemini-api/docs/rate-limits](https://ai.google.dev/gemini-api/docs/rate-limits)
 
 **"Tool returned error"**
 - Check the calculator syntax (Python expressions only)

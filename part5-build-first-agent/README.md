@@ -19,28 +19,29 @@ This agent can solve math problems that require calculation. It has:
 
 ## Quick Start
 
-### 1. Get an API Key
+### 1. Get a FREE API Key
 
-Sign up at [console.anthropic.com](https://console.anthropic.com/)
-- New accounts get **$5 in free credits** (plenty for testing!)
-- No credit card required
-- Go to Settings → API Keys to create your key
+Go to [ai.google.dev](https://aistudio.google.com/app/apikey)
+- Click "Get API Key" or "Create API Key"
+- **100% FREE** - no credit card needed!
+- Free tier: 15 requests/min, 1,500 requests/day
+- Perfect for learning and testing
 
 ### 2. Install Dependencies
 
 ```bash
-pip install anthropic
+pip install google-genai
 ```
 
 ### 3. Set Your API Key
 
 ```bash
-export ANTHROPIC_API_KEY='your-api-key-here'
+export GEMINI_API_KEY='your-api-key-here'
 ```
 
 Or on Windows:
 ```cmd
-set ANTHROPIC_API_KEY=your-api-key-here
+set GEMINI_API_KEY=your-api-key-here
 ```
 
 ### 4. Run It
@@ -53,9 +54,9 @@ You should see output like this:
 
 ```
 [step 0] calculator({'expression': '2345 * 678'}) -> 1589910
-[step 1] calculator({'expression': '24 * 60 * 60'}) -> 86400
-[step 2] calculator({'expression': '1589910 - 86400'}) -> 1503510
-The answer is 1,503,510.
+[step 0] calculator({'expression': '24 * 60 * 60'}) -> 86400
+[step 1] calculator({'expression': '1589910 - 86400'}) -> 1503510
+The result is **1,503,510**.
 ```
 
 ## How It Works
@@ -103,10 +104,15 @@ print(agent("What's 10 divided by 0?"))
 
 ## Common Issues
 
+**"ModuleNotFoundError: No module named 'google.genai'"**
+```bash
+pip install google-genai
+```
+
 **"API key not set"**
 ```bash
 # Make sure you've set the environment variable
-export ANTHROPIC_API_KEY='your-key-here'
+export GEMINI_API_KEY='your-key-here'
 ```
 
 **"calculator() returned Error: ..."**
