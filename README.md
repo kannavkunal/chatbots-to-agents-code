@@ -2,7 +2,9 @@
 
 Code examples from the **From Chatbots to Agents** series on building production AI agents.
 
-📖 **Read the series:** [AI Beyond the Demo](https://aibeyondthedemo.substack.com/)
+📖 **Read the series:**
+- [Substack: AI Beyond the Demo](https://aibeyondthedemo.substack.com/)
+- [Medium: Kunal Kannav](https://medium.com/@kannavkunal)
 
 ## What's This?
 
@@ -19,7 +21,7 @@ This repo contains runnable code from the series. Each part has its own folder w
 
 ```bash
 # Clone the repo
-git clone https://github.com/YOUR-USERNAME/chatbots-to-agents-code.git
+git clone https://github.com/kannavkunal/chatbots-to-agents-code.git
 cd chatbots-to-agents-code
 
 # Install dependencies
