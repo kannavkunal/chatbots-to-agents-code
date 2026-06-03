@@ -2,7 +2,9 @@
 
 This is the code from **Part 5** of the *From Chatbots to Agents* series.
 
-📖 **Read the article:** [Build Your First Agent in 50 Lines](link-to-be-added-after-publication)
+📖 **Read the article:**
+- [Medium](https://medium.com/@kannavkunal/build-your-first-ai-agent-in-50-lines-no-framework-b148f1e8d885)
+- [Substack](https://aibeyondthedemo.substack.com/p/build-your-first-ai-agent-in-50-lines)
 
 ## What's Here
 
@@ -163,4 +165,6 @@ This is a teaching example, not production code. Missing:
 
 ## Questions?
 
-Read the full article for the detailed walkthrough: [Part 5](link-to-be-added-after-publication)
+Read the full article for the detailed walkthrough:
+- [Medium](https://medium.com/@kannavkunal/build-your-first-ai-agent-in-50-lines-no-framework-b148f1e8d885)
+- [Substack](https://aibeyondthedemo.substack.com/p/build-your-first-ai-agent-in-50-lines)
