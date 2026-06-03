@@ -5,6 +5,7 @@ Code examples from the **From Chatbots to Agents** series on building production
 📖 **Read the series:**
 - [Substack: AI Beyond the Demo](https://aibeyondthedemo.substack.com/)
 - [Medium: Kunal Kannav](https://medium.com/@kannavkunal)
+- [LinkedIn Newsletter: AI Beyond the Demo](https://www.linkedin.com/newsletters/ai-beyond-the-demo-7454580258487525376/)
 
 ## What's This?
 
@@ -102,4 +103,6 @@ MIT — use this code however you want.
 ## Author
 
 **Kunal Kannav**  
-📬 [AI Beyond the Demo](https://aibeyondthedemo.substack.com/) — weekly newsletter on production AI engineering
+📬 Weekly newsletter on production AI engineering:
+- [Substack: AI Beyond the Demo](https://aibeyondthedemo.substack.com/)
+- [LinkedIn: AI Beyond the Demo](https://www.linkedin.com/newsletters/ai-beyond-the-demo-7454580258487525376/)
