@@ -27,13 +27,24 @@ Go to [ai.google.dev](https://aistudio.google.com/app/apikey)
 - Free tier: 15 requests/min, 1,500 requests/day
 - Perfect for learning and testing
 
-### 2. Install Dependencies
+### 2. Create a Virtual Environment (Recommended)
+
+```bash
+# Create virtual environment
+python3 -m venv .venv
+
+# Activate it
+source .venv/bin/activate  # On macOS/Linux
+# Or on Windows: .venv\Scripts\activate
+```
+
+### 3. Install Dependencies
 
 ```bash
 pip install google-genai
 ```
 
-### 3. Set Your API Key
+### 4. Set Your API Key
 
 ```bash
 export GEMINI_API_KEY='your-api-key-here'
@@ -44,7 +55,7 @@ Or on Windows:
 set GEMINI_API_KEY=your-api-key-here
 ```
 
-### 4. Run It
+### 5. Run It
 
 ```bash
 python agent.py
@@ -106,6 +117,9 @@ print(agent("What's 10 divided by 0?"))
 
 **"ModuleNotFoundError: No module named 'google.genai'"**
 ```bash
+# Make sure your virtual environment is activated
+source .venv/bin/activate  # On macOS/Linux
+# Then install
 pip install google-genai
 ```
 

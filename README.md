@@ -28,6 +28,13 @@ This repo contains runnable code from the series. Each part has its own folder w
 git clone https://github.com/kannavkunal/chatbots-to-agents-code.git
 cd chatbots-to-agents-code
 
+# Create a virtual environment (recommended!)
+python3 -m venv .venv
+
+# Activate the virtual environment
+source .venv/bin/activate  # On macOS/Linux
+# Or on Windows: .venv\Scripts\activate
+
 # Install dependencies
 pip install -r requirements.txt
 
@@ -81,6 +88,9 @@ part7-guardrails/           # Coming soon
 
 **"ModuleNotFoundError: No module named 'google.genai'"**
 ```bash
+# Make sure your virtual environment is activated first
+source .venv/bin/activate  # On macOS/Linux
+# Then install
 pip install google-genai
 ```
 
