@@ -64,7 +64,7 @@ The result is **1,503,510**.
 - **Part 2:** The Reasoning Loop — think, act, observe
 - **Part 3:** Tools & MCP — giving your agent hands
 - **Part 4:** Memory — why RAG isn't enough
-- **Part 5:** Build Your First Agent — 50 lines, no framework ← **start here**
+- **Part 5:** Build Your First Agent — 50 lines, no framework ← **start here** ([Medium](https://medium.com/@kannavkunal/build-your-first-ai-agent-in-50-lines-no-framework-b148f1e8d885) | [Substack](https://aibeyondthedemo.substack.com/p/build-your-first-ai-agent-in-50-lines))
 - **Part 6:** Evals — how to know it works
 - **Part 7:** Guardrails — stopping bad actions
 - **Part 8:** Observability — debugging agents
@@ -74,7 +74,7 @@ The result is **1,503,510**.
 ## What's in Each Folder
 
 ```
-part5-build-first-agent/    # 50-line agent with calculator tool
+part5-build-first-agent/    # 90-line agent with calculator tool (Gemini)
 ├── agent.py                # The main agent (start here!)
 ├── agent_explained.py      # Same code with detailed comments
 └── README.md               # Part-specific instructions

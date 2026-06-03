@@ -1,4 +1,4 @@
-# Part 5: Build Your First Agent in 50 Lines
+# Part 5: Build Your First Agent
 
 This is the code from **Part 5** of the *From Chatbots to Agents* series.
 
@@ -8,8 +8,9 @@ This is the code from **Part 5** of the *From Chatbots to Agents* series.
 
 ## What's Here
 
-- `agent.py` — The complete 50-line agent (clean, runnable)
+- `agent.py` — The complete agent (clean, runnable, ~90 lines)
 - `agent_explained.py` — Same code with detailed comments (start here if learning)
+- `agent_claude.py` — Alternative Claude/Anthropic version (if you prefer paid API)
 
 ## What It Does
 
