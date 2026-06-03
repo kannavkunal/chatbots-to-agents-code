@@ -2,7 +2,7 @@
 
 This is the code from **Part 5** of the *From Chatbots to Agents* series.
 
-📖 **Read the article:** [Build Your First Agent in 50 Lines](link)
+📖 **Read the article:** [Build Your First Agent in 50 Lines](link-to-be-added-after-publication)
 
 ## What's Here
 
@@ -19,24 +19,31 @@ This agent can solve math problems that require calculation. It has:
 
 ## Quick Start
 
-### 1. Install Dependencies
+### 1. Get an API Key
+
+Sign up at [console.anthropic.com](https://console.anthropic.com/)
+- New accounts get **$5 in free credits** (plenty for testing!)
+- No credit card required
+- Go to Settings → API Keys to create your key
+
+### 2. Install Dependencies
 
 ```bash
 pip install anthropic
 ```
 
-### 2. Set Your API Key
+### 3. Set Your API Key
 
 ```bash
-export ANTHROPIC_API_KEY='your-key-here'
+export ANTHROPIC_API_KEY='your-api-key-here'
 ```
 
 Or on Windows:
 ```cmd
-set ANTHROPIC_API_KEY=your-key-here
+set ANTHROPIC_API_KEY=your-api-key-here
 ```
 
-### 3. Run It
+### 4. Run It
 
 ```bash
 python agent.py
@@ -136,4 +143,4 @@ This is a teaching example, not production code. Missing:
 
 ## Questions?
 
-Read the full article for the detailed walkthrough: [Part 5](link)
+Read the full article for the detailed walkthrough: [Part 5](link-to-be-added-after-publication)

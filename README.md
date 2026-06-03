@@ -15,8 +15,11 @@ This repo contains runnable code from the series. Each part has its own folder w
 
 ### Prerequisites
 
-- Python 3.8+
-- An Anthropic API key ([get one here](https://console.anthropic.com/))
+- **Python 3.8+**
+- **Anthropic API key** — Sign up at [console.anthropic.com](https://console.anthropic.com/)
+  - New accounts get **$5 in free credits** (enough to run all these examples many times)
+  - No credit card required for the free tier
+  - After signup, get your key from Settings → API Keys
 
 ### Setup
 
