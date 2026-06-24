@@ -35,3 +35,6 @@ htmlcov/
 venv/
 __pycache__/
 *.pyc
+
+# Generated output
+eval_results.json

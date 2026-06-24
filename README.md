@@ -65,7 +65,7 @@ The result is **1,503,510**.
 - **Part 3:** Tools & MCP — giving your agent hands
 - **Part 4:** Memory — why RAG isn't enough
 - **Part 5:** Build Your First Agent — 50 lines, no framework ← **start here** ([Medium](https://medium.com/@kannavkunal/build-your-first-ai-agent-in-50-lines-no-framework-b148f1e8d885) | [Substack](https://aibeyondthedemo.substack.com/p/build-your-first-ai-agent-in-50-lines))
-- **Part 6:** Evals — how to know it works
+- **Part 6:** Evals — how to know it works ← **NEW!** ([Medium](link) | [Substack](link))
 - **Part 7:** Guardrails — stopping bad actions
 - **Part 8:** Observability — debugging agents
 - **Part 9:** Multi-Agent Systems — when to use them
@@ -79,7 +79,16 @@ part5-build-first-agent/    # 90-line agent with calculator tool (Gemini)
 ├── agent_explained.py      # Same code with detailed comments
 └── README.md               # Part-specific instructions
 
-part6-evals/                # Coming soon
+part6-evals/                # Eval suite for testing agents  
+├── eval_simple.py          # Start here! Minimal example (no API key)
+├── golden_dataset.json     # Your test cases
+├── grader.py               # Code-based grading
+├── judge.py                # LLM-as-a-judge (Gemini)
+├── agent_with_trace.py     # Agent with execution trace
+├── eval_harness.py         # Full eval suite
+├── test_evals.py           # Verification tests
+└── README.md               # Part-specific instructions
+
 part7-guardrails/           # Coming soon
 ...
 ```

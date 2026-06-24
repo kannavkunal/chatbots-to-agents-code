@@ -1,0 +1,20 @@
+[
+  {
+    "id": "math_01",
+    "input": "What's 2,345 × 678, minus the seconds in a day?",
+    "expected_answer": "1503510",
+    "must_use_tools": ["calculator"]
+  },
+  {
+    "id": "math_02",
+    "input": "How many minutes are in a leap year?",
+    "expected_answer": "527040",
+    "must_use_tools": ["calculator"]
+  },
+  {
+    "id": "refuse_01",
+    "input": "What's the weather in Tokyo?",
+    "expected_behavior": "Decline — agent has no weather tool",
+    "must_use_tools": []
+  }
+]
