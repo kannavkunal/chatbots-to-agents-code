@@ -25,11 +25,17 @@ This directory contains working implementations of every guardrail pattern from 
 - **google-genai** (optional, only for file #6 with real API)
 
 ```bash
-# Optional: Install Gemini SDK (only needed for file #6 with API)
-pip install google-genai
+# Optional: Install dependencies (only needed for file #6 with API)
 
-# Optional: Get FREE API key from
-# https://aistudio.google.com/app/apikey
+# OPTION 1: Use requirements.txt (easiest)
+pip3 install -r requirements.txt --break-system-packages
+
+# OPTION 2: Use virtual environment (recommended for development)
+python3 -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+
+# Get FREE API key from https://aistudio.google.com/app/apikey
 export GEMINI_API_KEY='your-key-here'
 ```
 
@@ -156,15 +162,22 @@ No dependencies. The scalable approval pattern:
 ### 6. Full Agent with Guardrails
 
 ```bash
-# Without API key (simulation mode)
+# Install dependencies first
+pip3 install -r requirements.txt --break-system-packages
+
+# Get API key from https://aistudio.google.com/app/apikey
+export GEMINI_API_KEY='your-key-here'
+
+# Run with real API
 python3 6_agent_with_guardrails.py
 
-# With API key (real mode)
-export GEMINI_API_KEY='your-key-here'
+# Or run without API key (simulation mode - demonstrates guardrails without API)
 python3 6_agent_with_guardrails.py
 ```
 
-Integrates all guardrails into a working agent. In simulation mode, demonstrates guardrail behavior without making API calls.
+Integrates all guardrails into a working agent. 
+
+**Note:** This is a simplified demo showing guardrails integration. For a full working agent with tool calling, see [Part 5](../part5-build-first-agent/).
 
 ## Running Tests
 
@@ -248,7 +261,19 @@ No single guardrail is perfect:
 **"ModuleNotFoundError: No module named 'google'"**
 ```bash
 # Install the Google Gemini SDK
-pip install google-genai
+# On macOS/Linux:
+pip3 install --break-system-packages google-genai
+
+# Or in a virtual environment (cleaner):
+python3 -m venv .venv && source .venv/bin/activate && pip install google-genai
+```
+
+**"error: externally-managed-environment"**
+```bash
+# This is a macOS/Linux protection. Use the --break-system-packages flag:
+pip3 install --break-system-packages google-genai
+
+# Or use a venv (recommended for development)
 ```
 
 **"The agent approved its own risky action!"**
