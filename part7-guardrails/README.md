@@ -175,9 +175,15 @@ python3 6_agent_with_guardrails.py
 python3 6_agent_with_guardrails.py
 ```
 
-Integrates all guardrails into a working agent. 
+**Complete agent** integrating all guardrail patterns with real tool calling:
+- ✅ Tool definitions passed to Gemini API
+- ✅ Calculator tool with allowlist checking
+- ✅ Budget/step limits enforced
+- ✅ Approval gates for risky tools
+- ✅ Input/output delimiting applied
+- ✅ Full reasoning loop like Part 5, but with guardrails
 
-**Note:** This is a simplified demo showing guardrails integration. For a full working agent with tool calling, see [Part 5](../part5-build-first-agent/).
+You'll see the agent reason, call tools (with guardrail checks), and solve the math problem.
 
 ## Running Tests
 
