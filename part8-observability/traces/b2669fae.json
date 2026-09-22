@@ -1,0 +1,50 @@
+{
+  "id": "b2669fae",
+  "task": "What's 123 \u00d7 456?",
+  "started": "2026-07-29T20:39:21Z",
+  "spans": [
+    {
+      "name": "llm",
+      "duration_ms": 465,
+      "input": null,
+      "error": "400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': 'API key not valid. Please pass a valid API key.', 'status': 'INVALID_ARGUMENT', 'details': [{'@type': 'type.googleapis.com/google.rpc.ErrorInfo', 'reason': 'API_KEY_INVALID', 'domain': 'googleapis.com', 'metadata': {'service': 'generativelanguage.googleapis.com'}}, {'@type': 'type.googleapis.com/google.rpc.LocalizedMessage', 'locale': 'en-US', 'message': 'API key not valid. Please pass a valid API key.'}]}}",
+      "status": "error"
+    },
+    {
+      "name": "llm",
+      "duration_ms": 0,
+      "input": null,
+      "output": "I'll use calculator",
+      "tokens_in": 150,
+      "tokens_out": 20,
+      "cost_usd": 0.002,
+      "status": "success"
+    },
+    {
+      "name": "tool:calculator",
+      "duration_ms": 0,
+      "input": {
+        "expression": "123*456"
+      },
+      "output": "56088",
+      "tokens_in": null,
+      "tokens_out": null,
+      "cost_usd": null,
+      "status": "success"
+    },
+    {
+      "name": "llm",
+      "duration_ms": 0,
+      "input": null,
+      "output": "The answer is 56088",
+      "tokens_in": 180,
+      "tokens_out": 15,
+      "cost_usd": 0.0018,
+      "status": "success"
+    }
+  ],
+  "total_duration_ms": 465,
+  "total_cost_usd": 0.0038,
+  "total_spans": 4,
+  "status": "error"
+}

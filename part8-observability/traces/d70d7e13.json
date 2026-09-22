@@ -1,0 +1,72 @@
+{
+  "id": "d70d7e13",
+  "task": "What's 123 \u00d7 456?",
+  "started": "2026-07-29T20:42:09Z",
+  "spans": [
+    {
+      "name": "llm",
+      "duration_ms": 799,
+      "input": null,
+      "output": "sdk_http_response=HttpResponse(\n  headers=<dict len=11>\n) candidates=[Candidate(\n  content=Content(\n    parts=[\n      Part(\n        function_call=FunctionCall(\n          args={\n            'expression': '123 * 456'\n          },\n          id='gwSFASRj',\n          name='calculator'\n        ),\n        thought_signature=b'\\x124\\n2\\x01\\x11M2\\x0f7\\xa6Z\\xd65\\x84<\\xed\\x0f<Hqs\\x19\\x94&\\xea\\xa7k}6aL\\x86#\\xf4\\xcf\\xacf\\x93\\t\\xc5\\x03d\\x9c\\x81\\xc7,%K-\\xf4\\xa8\\xcb\\xe3'\n      ),\n    ],\n    role='model'\n  ),\n  finish_reason=<FinishReason.STOP: 'STOP'>,\n  index=0\n)] create_time=None model_version='gemini-3.1-flash-lite' prompt_feedback=None response_id='oWVqatCPJo6o_uMP_rfMgAw' usage_metadata=GenerateContentResponseUsageMetadata(\n  candidates_token_count=21,\n  prompt_token_count=175,\n  prompt_tokens_details=[\n    ModalityTokenCount(\n      modality=<MediaModality.TEXT: 'TEXT'>,\n      token_count=175\n    ),\n  ],\n  total_token_count=196\n) model_status=None automatic_function_calling_history=None parsed=None",
+      "tokens_in": 175,
+      "tokens_out": 21,
+      "cost_usd": 2.3800000000000003e-05,
+      "status": "success"
+    },
+    {
+      "name": "tool:calculator",
+      "duration_ms": 0,
+      "input": {
+        "expression": "123 * 456"
+      },
+      "output": "Result: 56088",
+      "tokens_in": null,
+      "tokens_out": null,
+      "cost_usd": null,
+      "status": "success"
+    },
+    {
+      "name": "llm",
+      "duration_ms": 122,
+      "input": null,
+      "error": "400 INVALID_ARGUMENT. {'error': {'code': 400, 'message': \"Invalid value at 'contents[2].parts[0]' (oneof), oneof field 'data' is already set. Cannot set 'functionResponse'\", 'status': 'INVALID_ARGUMENT', 'details': [{'@type': 'type.googleapis.com/google.rpc.BadRequest', 'fieldViolations': [{'field': 'contents[2].parts[0]', 'description': \"Invalid value at 'contents[2].parts[0]' (oneof), oneof field 'data' is already set. Cannot set 'functionResponse'\"}]}]}}",
+      "status": "error"
+    },
+    {
+      "name": "llm",
+      "duration_ms": 0,
+      "input": null,
+      "output": "I'll use calculator",
+      "tokens_in": 150,
+      "tokens_out": 20,
+      "cost_usd": 0.002,
+      "status": "success"
+    },
+    {
+      "name": "tool:calculator",
+      "duration_ms": 0,
+      "input": {
+        "expression": "123*456"
+      },
+      "output": "56088",
+      "tokens_in": null,
+      "tokens_out": null,
+      "cost_usd": null,
+      "status": "success"
+    },
+    {
+      "name": "llm",
+      "duration_ms": 0,
+      "input": null,
+      "output": "The answer is 56088",
+      "tokens_in": 180,
+      "tokens_out": 15,
+      "cost_usd": 0.0018,
+      "status": "success"
+    }
+  ],
+  "total_duration_ms": 921,
+  "total_cost_usd": 0.0038238,
+  "total_spans": 6,
+  "status": "error"
+}
