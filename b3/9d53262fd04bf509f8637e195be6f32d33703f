@@ -1,0 +1,32 @@
+part10-agentic-stack/README.md
+  s_eafcfa9a4bb77b::t_57d93d273c99b0 3,7-58
+part9-multi-agent/2_map_reduce.py
+  s_eafcfa9a4bb77b::t_5eb5fd054dc31d 1-149
+part9-multi-agent/3_generator_critic.py
+  s_eafcfa9a4bb77b::t_71d785637acd8f 1-135
+part9-multi-agent/requirements.txt
+  s_eafcfa9a4bb77b::t_31df0b488c562d 1
+part9-multi-agent/README.md
+  s_eafcfa9a4bb77b::t_04c477390544b1 3,7-58
+part9-multi-agent/test_multi_agent.py
+  s_eafcfa9a4bb77b::t_ab9e541b065414 1-93
+part9-multi-agent/1_supervisor_workers.py
+  s_eafcfa9a4bb77b::t_98b20542e95357 1-13,18-21,24-197
+  s_eafcfa9a4bb77b::t_1bb283efd8f170 14-17,22-23
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "b39d53262fd04bf509f8637e195be6f32d33703f",
+  "prompts": {},
+  "sessions": {
+    "s_eafcfa9a4bb77b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6b7976a8-b126-49a1-833d-301a1aa4eee2",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Kunal Kannav <kkannav@paloaltonetworks.com>"
+    }
+  }
+}
